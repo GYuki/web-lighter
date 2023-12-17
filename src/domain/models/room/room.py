@@ -1,8 +1,8 @@
 class Room(object):
-    def __init__(self):
-        self._id = ""
-        self.players = 0
-        self._address = ""
+    def __init__(self, _id="", _players=0, _address=""):
+        self._id = _id
+        self.players = _players
+        self._address = _address
 
     @property
     def address(self):
