@@ -2,14 +2,14 @@ from src.domain.models.room.room import Room
 import json
 
 
-class RoomMapper(object):
+class RedisRoomMapper(object):
     @classmethod
     def map_to_redis(cls, room: Room):
         return json.dumps(
             {
-                "id": room.id,
-                "players": room.players,
-                "address": room.address
+                'id': room.id,
+                'players': room.players,
+                'address': room.address
             }
         )
 

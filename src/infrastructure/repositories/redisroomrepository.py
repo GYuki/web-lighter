@@ -1,7 +1,7 @@
 from redis import Redis
 
 from src.domain.models.room.roomrepository import RoomRepository
-from src.infrastructure.mappers.room import RoomMapper
+from src.infrastructure.mappers.redis.room import RedisRoomMapper
 
 
 class RedisRoomRepository(RoomRepository):
@@ -12,13 +12,13 @@ class RedisRoomRepository(RoomRepository):
         return self.update_room(room)
 
     def get_room(self, room_id):
-        return self._connection.hget("rooms", room_id)
+        return RedisRoomMapper.map_from_redis(self._connection.hget("rooms", room_id))
 
     def delete_room(self, room_id):
         self._connection.hdel("rooms", room_id)
         return True
 
     def update_room(self, room):
-        self._connection.hset("rooms", room.id, RoomMapper.map_to_redis(room))
+        self._connection.hset("rooms", room.id, RedisRoomMapper.map_to_redis(room))
         return True
 

@@ -1,9 +1,11 @@
 class Server(object):
-    def __init__(self, ip, port, domain=""):
-        self._ip = ip
-        self._port = port
+    def __init__(self, address, domain="", cpu=0):
+        self._ip, self._port = self._split_address(address)
         self._domain = domain
-        self._cpu = 0
+        self._cpu = cpu
+
+    def _split_address(self, address):
+        return address.split(":")
 
     @property
     def domain(self):
