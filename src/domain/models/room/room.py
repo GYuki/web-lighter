@@ -1,8 +1,12 @@
+from src.domain.models.room.room_id import RoomId
+
+
 class Room(object):
-    def __init__(self, _id="", _players=0, _address=""):
-        self._id = _id
-        self.players = _players
-        self._address = _address
+    def __init__(self, room_id="", players=0, max_players=1, address=""):
+        self._room_id = RoomId(room_id)
+        self.players = players
+        self._max_players = max_players
+        self._address = address
 
     @property
     def address(self):
@@ -10,4 +14,8 @@ class Room(object):
 
     @property
     def id(self):
-        return self._id
+        return self._room_id.value
+    
+    @property
+    def max_players(self):
+        return self._max_players

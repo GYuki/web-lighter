@@ -9,6 +9,7 @@ class RedisRoomMapper(object):
             {
                 'id': room.id,
                 'players': room.players,
+                'max_players': room.max_players,
                 'address': room.address
             }
         )
@@ -17,7 +18,8 @@ class RedisRoomMapper(object):
     def map_from_redis(cls, room_string):
         room = json.loads(room_string)
         return Room(
-            room['id'],
-            room['players'],
-            room['address']
+            room_id=room['id'],
+            players=room['players'],
+            address=room['address'],
+            max_players=room['max_players']
         )
