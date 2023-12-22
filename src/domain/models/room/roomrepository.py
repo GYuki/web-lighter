@@ -11,6 +11,10 @@ class RoomRepository(ABC):
         pass
 
     @abstractmethod
+    def get_random_room(self):
+        pass
+
+    @abstractmethod
     def update_room(self, room):
         pass
 

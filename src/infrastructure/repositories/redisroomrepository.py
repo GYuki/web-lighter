@@ -14,6 +14,9 @@ class RedisRoomRepository(RoomRepository):
     def get_room(self, room_id):
         return RedisRoomMapper.map_from_redis(self._connection.hget("rooms", room_id))
 
+    def get_random_room(self):
+        return RedisRoomMapper.map_to_redis(self._connection.hrandfield("rooms", 1, withvalues=True))
+
     def delete_room(self, room_id):
         self._connection.hdel("rooms", room_id)
         return True
