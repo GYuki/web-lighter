@@ -10,4 +10,4 @@ class Room(object):
 
     @property
     def id(self):
-        return self._address
+        return self._id

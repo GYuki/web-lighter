@@ -1,8 +1,11 @@
+from src.domain.models.server.serverload import ServerLoad
+
+
 class Server(object):
     def __init__(self, address, domain="", cpu=0):
         self._ip, self._port = self._split_address(address)
         self._domain = domain
-        self._cpu = cpu
+        self._load = ServerLoad(cpu)
 
     def _split_address(self, address):
         return address.split(":")
@@ -24,8 +27,8 @@ class Server(object):
         return 'wss://' if self._domain else 'ws://' + self.address
 
     def set_cpu_level(self, value):
-        self._cpu = value
+        self._load.set_load(value)
 
     @property
     def cpu_level(self):
-        return self._cpu
+        return self._load.value

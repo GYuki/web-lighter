@@ -11,6 +11,14 @@ class ServerRepository(ABC):
         pass
 
     @abstractmethod
+    def update_server(self, server):
+        pass
+
+    @abstractmethod
+    def get_best_server(self):
+        pass
+
+    @abstractmethod
     def get_all_servers(self):
         pass
 
