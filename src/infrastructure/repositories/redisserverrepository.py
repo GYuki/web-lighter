@@ -1,12 +1,12 @@
-from redis.asyncio import Redis
+from redis.asyncio import Redis, ConnectionPool
 
 from src.domain.models.server.serverrepository import ServerRepository
 from src.infrastructure.mappers.redis.server import RedisServerMapper
 
 
 class RedisServerRepository(ServerRepository):
-    def __init__(self, connection: Redis):
-        self._connection = connection
+    def __init__(self, pool: ConnectionPool):
+        self._connection = Redis.from_pool(pool)
 
     async def add_server(self, server):
         await self._connection.hset("servers", RedisServerMapper.map_to_redis(server))

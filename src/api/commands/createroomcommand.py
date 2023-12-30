@@ -1,5 +1,7 @@
+from dependency_injector.wiring import inject, Provide
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
+from src.container import Container
 from src.domain.models.room.room import Room
 from src.domain.models.room.roomrepository import RoomRepository
 
@@ -40,18 +42,18 @@ class CreateRoomCommandResponse(BaseResponse):
 
 
 class CreateCommandHandler(BaseHandler):
-    def __init__(self, repository: RoomRepository):
+    def __init__(self):
         super().__init__()
-        self._repository = repository
 
-    async def handle(self, req: CreateRoomCommandRequest):
+    @inject
+    async def handle(self, req: CreateRoomCommandRequest, room_repository: RoomRepository = Provide[Container.room_repository]):
         room = Room(
             address=req.address,
             max_players=req.max_players,
             players=req.players
         )
 
-        status = await self._repository.create_room(room)
+        status = await room_repository.create_room(room)
         return CreateRoomCommandResponse(
             status,
             room

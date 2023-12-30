@@ -1,14 +1,15 @@
-from redis.asyncio import Redis
+from redis.asyncio import Redis, ConnectionPool
 
 from src.domain.models.room.roomrepository import RoomRepository
 from src.infrastructure.mappers.redis.room import RedisRoomMapper
 
 
 class RedisRoomRepository(RoomRepository):
-    def __init__(self, connection: Redis):
-        self._connection = connection
+    def __init__(self, pool: ConnectionPool):
+        self._connection = Redis.from_pool(pool)
 
     async def create_room(self, room):
+        print(id(self._connection))
         result = await self.update_room(room)
         return result
 
@@ -17,8 +18,9 @@ class RedisRoomRepository(RoomRepository):
         return RedisRoomMapper.map_from_redis(room)
 
     async def get_random_room(self):
+        print(id(self._connection))
         room = await self._connection.hrandfield("rooms", 1, withvalues=True)
-        return RedisRoomMapper.map_to_redis(room)
+        return RedisRoomMapper.map_from_redis(room[1])
 
     async def delete_room(self, room_id):
         await self._connection.hdel("rooms", room_id)
