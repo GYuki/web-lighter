@@ -1,12 +1,5 @@
-from dependency_injector.wiring import Provide, inject
-
-from src.container import Container
-from src.domain.models.room.roomrepository import RoomRepository
-
-
 class RoomQueries(object):
-    @inject
-    def __init__(self, repository: RoomRepository = Provide[Container.room_repository]):
+    def __init__(self, repository):
         self._repository = repository
 
     def get_room_by_id(self, room_id):

@@ -16,6 +16,8 @@ class RedisRoomMapper(object):
 
     @classmethod
     def map_from_redis(cls, room_string):
+        if not room_string:
+            return None
         room = json.loads(room_string)
         return Room(
             room_id=room['id'],
