@@ -1,8 +1,12 @@
+from dependency_injector.wiring import Provide, inject
+
+from src.container import Container
 from src.domain.models.server.serverrepository import ServerRepository
 
 
 class ServerQueries(object):
-    def __init__(self, repository: ServerRepository):
+    @inject
+    def __init__(self, repository: ServerRepository = Provide[Container.server_repository]):
         self._repository = repository
 
     def get_best_server(self):
