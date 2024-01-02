@@ -1,5 +1,7 @@
+from dependency_injector.wiring import Provide
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
+from src.container import Container
 from src.domain.models.room.roomrepository import RoomRepository
 
 
@@ -29,19 +31,18 @@ class UpdatePlayersCountCommandResponse(BaseResponse):
 
 
 class UpdatePlayersCountCommandHandler(BaseHandler):
-    def __init__(self, repository: RoomRepository):
+    def __init__(self):
         super().__init__()
-        self._repository = repository
 
-    async def handle(self, req: UpdatePlayersCountCommandRequest):
-        room = await self._repository.get_room(req.room_id)
+    async def handle(self, req: UpdatePlayersCountCommandRequest, room_repository: RoomRepository = Provide[Container.room_repository]):
+        room = await room_repository.get_room(req.room_id)
         status = False
         if room is not None:
             room.players = req.players_count
             if room.players == room.max_players:  # prevent rooms from overflow
-                await self._repository.delete_room(room.id)
+                await room_repository.delete_room(room.id)
             else:
-                await self._repository.update_room(room)
+                await room_repository.update_room(room)
 
         return UpdatePlayersCountCommandResponse(
             status

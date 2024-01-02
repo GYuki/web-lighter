@@ -1,5 +1,7 @@
+from dependency_injector.wiring import Provide
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
+from src.container import Container
 from src.domain.models.server.serverrepository import ServerRepository
 
 
@@ -29,14 +31,13 @@ class UpdateServerCpuCommandResponse(BaseResponse):
 
 
 class UpdateServerCpuCommandHandler(BaseHandler):
-    def __init__(self, repository: ServerRepository):
+    def __init__(self):
         super().__init__()
-        self._repository = repository
 
-    async def handle(self, req: UpdateServerCpuCommandRequest):
-        server = await self._repository.get_server_by_address(req.address)
+    async def handle(self, req: UpdateServerCpuCommandRequest, server_repository: ServerRepository = Provide[Container.server_repository]):
+        server = await server_repository.get_server_by_address(req.address)
         server.set_cpu_level(req.cpu)
-        result = await self._repository.update_server(server)
+        result = await server_repository.update_server(server)
         return UpdateServerCpuCommandResponse(
             status=result
         )

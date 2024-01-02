@@ -1,5 +1,7 @@
+from dependency_injector.wiring import Provide
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
+from src.container import Container
 from src.domain.models.room.roomrepository import RoomRepository
 
 
@@ -24,12 +26,11 @@ class DeleteRoomCommandResponse(BaseResponse):
 
 
 class DeleteRoomCommandHandler(BaseHandler):
-    def __init__(self, repository: RoomRepository):
+    def __init__(self):
         super().__init__()
-        self._repository = repository
 
-    async def handle(self, req: DeleteRoomCommandRequest):
-        status = self._repository.delete_room(req.room_id)
+    async def handle(self, req: DeleteRoomCommandRequest, room_repository: RoomRepository = Provide[Container.room_repository]):
+        status = await room_repository.delete_room(req.room_id)
         return DeleteRoomCommandResponse(
             status=status
         )

@@ -1,5 +1,7 @@
+from dependency_injector.wiring import Provide
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
+from src.container import Container
 from src.domain.models.server.serverrepository import ServerRepository
 
 
@@ -24,12 +26,11 @@ class RemoveServerCommandResponse(BaseResponse):
 
 
 class RemoveServerCommandHandler(BaseHandler):
-    def __init__(self, repository: ServerRepository):
+    def __init__(self):
         super().__init__()
-        self._repository = repository
 
-    async def handle(self, req: RemoveServerCommandRequest):
-        result = await self._repository.remove_server(req.address)
+    async def handle(self, req: RemoveServerCommandRequest, server_repository: ServerRepository = Provide[Container.server_repository]):
+        result = await server_repository.remove_server(req.address)
         return RemoveServerCommandResponse(
             status=result
         )
