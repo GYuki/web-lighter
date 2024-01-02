@@ -1,4 +1,4 @@
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
 from src.container import Container
@@ -34,6 +34,7 @@ class UpdatePlayersCountCommandHandler(BaseHandler):
     def __init__(self):
         super().__init__()
 
+    @inject
     async def handle(self, req: UpdatePlayersCountCommandRequest, room_repository: RoomRepository = Provide[Container.room_repository]):
         room = await room_repository.get_room(req.room_id)
         status = False

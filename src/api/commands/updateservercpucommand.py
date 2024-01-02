@@ -1,4 +1,4 @@
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
 from src.container import Container
@@ -34,6 +34,7 @@ class UpdateServerCpuCommandHandler(BaseHandler):
     def __init__(self):
         super().__init__()
 
+    @inject
     async def handle(self, req: UpdateServerCpuCommandRequest, server_repository: ServerRepository = Provide[Container.server_repository]):
         server = await server_repository.get_server_by_address(req.address)
         server.set_cpu_level(req.cpu)

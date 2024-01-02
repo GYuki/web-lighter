@@ -1,4 +1,4 @@
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from pydiator_core.interfaces import BaseRequest, BaseResponse, BaseHandler
 
 from src.container import Container
@@ -35,6 +35,7 @@ class CreateServerCommandHandler(BaseHandler):
     def __init__(self):
         super().__init__()
 
+    @inject
     async def handle(self, req: CreateServerCommandRequest, server_repository: ServerRepository = Provide[Container.server_repository]):
         server = Server(
             address=req.address,
