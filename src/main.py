@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.controllers.loadbalancer import router
+from src.api.controllers.roomcontroller import router
 from src.container import Container
 from src.mediator_setup import set_up
-from src.api.controllers import loadbalancer as lb_api
+from src.api.controllers import roomcontroller as lb_api
 
 
 container = Container()
