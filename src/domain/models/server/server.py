@@ -24,7 +24,7 @@ class Server(object):
 
     @property
     def ws_address(self):
-        return 'wss://' if self._domain else 'ws://' + self.address
+        return ('wss://' if self._domain else 'ws://') + self.address
 
     def set_cpu_level(self, value):
         self._load.set_load(value)

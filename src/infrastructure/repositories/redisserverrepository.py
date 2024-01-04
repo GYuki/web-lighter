@@ -40,5 +40,5 @@ class RedisServerRepository(ServerRepository):
         result = None
         _server_key = await self._get_best_loaded_server()
         if _server_key:
-            result = await self.get_server_by_address(_server_key)
+            result = await self.get_server_by_address(_server_key[0])
         return result

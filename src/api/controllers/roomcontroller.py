@@ -30,7 +30,7 @@ async def join_room(room_id: str = None, queries: RoomQueries = Depends(Provide[
 async def join_random_room(queries: RoomQueries = Depends(Provide[Container.room_queries])) -> Room:
     room = await queries.get_random_room()
     if room is None:
-        raise HTTPException(status_code=404, detail="No random room were found")
+        raise HTTPException(status_code=404, detail="No random room was found")
 
     return Room(
         id=room.id,
