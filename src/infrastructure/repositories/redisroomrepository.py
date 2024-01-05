@@ -9,7 +9,6 @@ class RedisRoomRepository(RoomRepository):
         self._connection = Redis.from_pool(pool)
 
     async def create_room(self, room):
-        print(id(self._connection))
         result = await self.update_room(room)
         return result
 
@@ -18,7 +17,6 @@ class RedisRoomRepository(RoomRepository):
         return RedisRoomMapper.map_from_redis(room)
 
     async def get_random_room(self):
-        print(id(self._connection))
         room = await self._connection.hrandfield("rooms", 1, withvalues=True)
         return RedisRoomMapper.map_from_redis(room[1])
 
