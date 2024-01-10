@@ -11,7 +11,7 @@ class CreateRoomCommandRequest(BaseRequest):
         super().__init__()
         self._address = address
         self._max_players = max_players
-        self._players = 0
+        self._players = players
 
     @property
     def address(self):
