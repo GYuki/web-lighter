@@ -1,3 +1,5 @@
+import os
+
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Singleton, Factory
 from redis.asyncio import ConnectionPool
@@ -11,7 +13,7 @@ from src.infrastructure.repositories.redisserverrepository import RedisServerRep
 class Container(DeclarativeContainer):
     _redis = Singleton(
         ConnectionPool.from_url,
-        url='redis://192.168.30.128'
+        url=f"redis://{os.environ['REDIS_HOST']}:{os.environ['REDIS_PORT']}"
     )
 
     room_repository = Factory(
