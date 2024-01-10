@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import uvicorn
 from fastapi import FastAPI
@@ -24,12 +25,12 @@ app.include_router(server_api.router)
 
 @app.on_event("startup")
 async def startup() -> None:
-    # user = os.environ['RABBITMQ_DEFAULT_USER']
-    # passwd = os.environ['RABBITMQ_DEFAULT_PASS']
-    # host = os.environ['RABBITMQ_HOST']
-    # port = os.environ['RABBITMQ_PORT']
+    user = os.environ['RABBITMQ_DEFAULT_USER']
+    passwd = os.environ['RABBITMQ_DEFAULT_PASS']
+    host = os.environ['RABBITMQ_HOST']
+    port = os.environ['RABBITMQ_PORT']
 
-    ep = AsyncioRabbitMQ('amqp://adm:1@192.168.30.128:5672/%2F')
+    ep = AsyncioRabbitMQ(f'amqp://{user}:{passwd}@{host}:{port}/%2F')
     ep.connect()
     await asyncio.sleep(1)  # Wait for MQ
     ep.read_messages("server_cpu_update", on_server_cpu_update)
