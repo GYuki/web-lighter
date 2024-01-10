@@ -16,8 +16,12 @@ class AsyncioRabbitMQ(object):
     EXCHANGE_TYPE = ExchangeType.topic
     QUEUE = ''
     ROUTING_KEYS = [
-        'server_update',
-        'room_update'
+        'server_cpu_update',
+        'room_create',
+        'server_create',
+        'room_delete',
+        'server_remove',
+        'room_players_update'
     ]
 
     def __init__(self, amqp_url):
