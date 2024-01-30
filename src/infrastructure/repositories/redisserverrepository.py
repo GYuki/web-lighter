@@ -9,7 +9,7 @@ class RedisServerRepository(ServerRepository):
         self._connection = Redis.from_pool(pool)
 
     async def add_server(self, server):
-        await self._connection.hset("servers", RedisServerMapper.map_to_redis(server))
+        await self._connection.hset("servers", server.address, RedisServerMapper.map_to_redis(server))
         return True
 
     async def update_server(self, server):

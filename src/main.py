@@ -11,10 +11,11 @@ from src.container import Container
 from src.mediator_setup import set_up
 from src.api.controllers import roomcontroller as room_api
 from src.api.controllers import servercontroller as server_api
+from src.api.commands import createservercommand as csc
 
 
 container = Container()
-container.wire(modules=[room_api, server_api])
+container.wire(modules=[room_api, server_api, csc])
 
 set_up()
 

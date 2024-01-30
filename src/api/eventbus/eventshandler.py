@@ -1,3 +1,5 @@
+import json
+
 from pydiator_core.mediatr import pydiator
 
 from src.api.commands.createroomcommand import CreateRoomCommandRequest
@@ -6,11 +8,13 @@ from src.api.commands.deleteroomcommand import DeleteRoomCommandRequest
 from src.api.commands.removeservercommand import RemoveServerCommandRequest
 from src.api.commands.updateplayerscommand import UpdatePlayersCountCommandRequest
 from src.api.commands.updateservercpucommand import UpdateServerCpuCommandRequest
+from src.api.notifications.roomcreatednotification import RoomCreatedNotification
 
 
 async def on_server_cpu_update(msg):
-    address = msg['address']
-    cpu = msg['cpu']
+    data = json.loads(msg)
+    address = data['address']
+    cpu = data['cpu']
 
     result = await pydiator.send(
         UpdateServerCpuCommandRequest(
@@ -21,22 +25,22 @@ async def on_server_cpu_update(msg):
 
 
 async def on_room_create(msg):
-    address = msg['address']
-    max_players = msg['max_players']
-    players = msg['players']
+    data = json.loads(msg)
+    address = data['address']
+    room_id = data['room_id']
 
-    result = await pydiator.send(
-        CreateRoomCommandRequest(
+    await pydiator.publish(
+        RoomCreatedNotification(
             address=address,
-            max_players=max_players,
-            players=players
+            room_id=room_id
         )
     )
 
 
 async def on_server_create(msg):
-    address = msg['address']
-    domain = msg['domain']
+    data = json.loads(msg)
+    address = data['address']
+    domain = data['domain']
 
     result = await pydiator.send(
         CreateServerCommandRequest(
@@ -47,7 +51,8 @@ async def on_server_create(msg):
 
 
 async def on_room_delete(msg):
-    room_id = msg['room_id']
+    data = json.loads(msg)
+    room_id = data['room_id']
 
     result = await pydiator.send(
         DeleteRoomCommandRequest(
@@ -67,8 +72,9 @@ async def on_server_remove(msg):
 
 
 async def on_room_players_update(msg):
-    players_count = msg['players']
-    room_id = msg['room_id']
+    data = json.loads(msg)
+    players_count = data['players']
+    room_id = data['room_id']
 
     result = await pydiator.send(
         UpdatePlayersCountCommandRequest(

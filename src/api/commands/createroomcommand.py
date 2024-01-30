@@ -7,15 +7,11 @@ from src.domain.models.room.roomrepository import RoomRepository
 
 
 class CreateRoomCommandRequest(BaseRequest):
-    def __init__(self, max_players, address, players=0):
+    def __init__(self, room_id, max_players, players=0):
         super().__init__()
-        self._address = address
         self._max_players = max_players
         self._players = players
-
-    @property
-    def address(self):
-        return self._address
+        self._room_id = room_id
 
     @property
     def max_players(self):
@@ -24,6 +20,10 @@ class CreateRoomCommandRequest(BaseRequest):
     @property
     def players(self):
         return self._players
+
+    @property
+    def room_id(self):
+        return self._room_id
 
 
 class CreateRoomCommandResponse(BaseResponse):
@@ -48,9 +48,9 @@ class CreateCommandHandler(BaseHandler):
     @inject
     async def handle(self, req: CreateRoomCommandRequest, room_repository: RoomRepository = Provide[Container.room_repository]):
         room = Room(
-            address=req.address,
             max_players=req.max_players,
-            players=req.players
+            players=req.players,
+            room_id=req.room_id
         )
 
         status = await room_repository.create_room(room)

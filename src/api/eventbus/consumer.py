@@ -61,7 +61,10 @@ class AsyncioRabbitMQ(object):
         logger.info('Channel opened')
         self._channel = channel
         self.add_on_channel_close_callback()
-        self.setup_exchange(self.EXCHANGE)
+        # self.setup_exchange(self.EXCHANGE)
+
+        for routing_key in self.ROUTING_KEYS:
+            self.setup_queue(routing_key)
 
     def add_on_channel_close_callback(self):
         logger.info('Adding channel close callback')
