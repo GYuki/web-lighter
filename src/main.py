@@ -12,10 +12,13 @@ from src.mediator_setup import set_up
 from src.api.controllers import roomcontroller as room_api
 from src.api.controllers import servercontroller as server_api
 from src.api.commands import createservercommand as csc
+from src.api.commands import createroomcommand as crc
+from src.api.commands import updateplayerscommand as upc
+from src.api.notifications import roomcreatednotification as rcn
 
 
 container = Container()
-container.wire(modules=[room_api, server_api, csc])
+container.wire(modules=[room_api, server_api, csc, crc, upc, rcn])
 
 set_up()
 
@@ -42,4 +45,4 @@ async def startup() -> None:
     ep.read_messages("room_players_update", on_room_players_update)
 
 
-uvicorn.run(app, host="127.0.0.1", port=8000)
+uvicorn.run(app, host="127.0.0.1", port=80)

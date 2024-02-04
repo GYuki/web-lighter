@@ -7,6 +7,7 @@ from src.api.commands.deleteroomcommand import DeleteRoomCommandRequest, DeleteR
 from src.api.commands.removeservercommand import RemoveServerCommandRequest, RemoveServerCommandHandler
 from src.api.commands.updateplayerscommand import UpdatePlayersCountCommandRequest, UpdatePlayersCountCommandHandler
 from src.api.commands.updateservercpucommand import UpdateServerCpuCommandRequest, UpdateServerCpuCommandHandler
+from src.api.notifications.roomcreatednotification import RoomCreatedNotification, RoomCreatedNotificationHandler
 
 
 def set_up():
@@ -17,5 +18,6 @@ def set_up():
     pydiator_container.register_request(RemoveServerCommandRequest, RemoveServerCommandHandler())
     pydiator_container.register_request(UpdatePlayersCountCommandRequest, UpdatePlayersCountCommandHandler())
     pydiator_container.register_request(UpdateServerCpuCommandRequest, UpdateServerCpuCommandHandler())
+    pydiator_container.register_notification(RoomCreatedNotification, [RoomCreatedNotificationHandler()])
 
     pydiator.ready(container=pydiator_container)

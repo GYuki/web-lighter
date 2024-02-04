@@ -24,6 +24,6 @@ class RoomCreatedNotificationHandler(BaseNotificationHandler):
     @inject
     async def handle(self, notification: RoomCreatedNotification, room_repository: RoomRepository = Provide[Container.room_repository]):
         room = await room_repository.get_room(notification.room_id)
-        room.address = notification.address
+        room.set_address(notification.address)
 
         await room_repository.update_room(room)

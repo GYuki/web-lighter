@@ -19,3 +19,6 @@ class Room(object):
     @property
     def max_players(self):
         return self._max_players
+
+    def set_address(self, address):
+        self._address = address
