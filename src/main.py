@@ -15,10 +15,11 @@ from src.api.commands import createservercommand as csc
 from src.api.commands import createroomcommand as crc
 from src.api.commands import updateplayerscommand as upc
 from src.api.notifications import roomcreatednotification as rcn
+from src.api.commands import deleteroomcommand as drc
 
 
 container = Container()
-container.wire(modules=[room_api, server_api, csc, crc, upc, rcn])
+container.wire(modules=[room_api, server_api, csc, crc, upc, rcn, drc])
 
 set_up()
 
